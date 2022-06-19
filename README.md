@@ -1,6 +1,7 @@
 # Cloud Customers
 
 - make solution: `dotnet new sln -o CloudCustomers`.
+- add git ignore file: `dotnet new gitignore`
 
 ## Reference
 
