@@ -5,6 +5,7 @@
 - add web api project: `dotnet new webapi -o CloudCustomers.API`
 - add unit test project: `dotnet new xunit -o CloudCustomers.UnitTests`
 - add all project to solution: `dotnet sln add **/*.csproj` or `dotnet sln add .\CloudCustomers.API\CloudCustomers.API.csproj` and `dotnet sln add .\CloudCustomers.UnitTests\CloudCustomers.UnitTests.csproj`
+- add `moq` and `FluentAssertion` library to test project
 
 ## Reference
 
