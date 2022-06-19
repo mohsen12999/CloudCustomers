@@ -2,7 +2,7 @@ using Xunit;
 
 namespace CloudCustomers.UnitTests;
 
-public class UnitTest1
+public class TestUserController
 {
     [Fact]
     public void Test1()
