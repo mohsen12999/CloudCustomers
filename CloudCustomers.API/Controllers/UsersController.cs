@@ -4,11 +4,11 @@ namespace CloudCustomers.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UserController : ControllerBase
+public class UsersController : ControllerBase
 {
-    private readonly ILogger<UserController> _logger;
+    private readonly ILogger<UsersController> _logger;
 
-    public UserController(ILogger<UserController> logger)
+    public UsersController(ILogger<UsersController> logger)
     {
         _logger = logger;
     }
