@@ -17,6 +17,12 @@ public class TestUsersController
     {
         // Arrange
         var mockUserService = new Mock<IUsersService>();
+        mockUserService
+            .Setup(service => service.GetAllUsers())
+            .ReturnsAsync(new List<User>()
+            {
+                new User(){Id = 1, Name = "Mohsen", Address = new Address() , Email = ""}
+            });
         var sut = new UsersController(mockUserService.Object);
         
         // Act
@@ -53,7 +59,10 @@ public class TestUsersController
         var mockUserService = new Mock<IUsersService>();
         mockUserService
             .Setup(service => service.GetAllUsers())
-            .ReturnsAsync(new List<User>());
+            .ReturnsAsync(new List<User>()
+            {
+                new User(){Id = 1, Name = "Mohsen", Address = new Address() , Email = ""}
+            });
         var sut = new UsersController(mockUserService.Object);
 
         // Act
@@ -64,4 +73,24 @@ public class TestUsersController
         var objectResult = (OkObjectResult)result;
         objectResult.Value.Should().BeOfType<List<User>>();
     }
+    
+    [Fact]
+    public async Task Get_OnNoUserFound_Return404()
+    {
+        // Arrange
+        var mockUserService = new Mock<IUsersService>();
+        mockUserService
+            .Setup(service => service.GetAllUsers())
+            .ReturnsAsync(new List<User>());
+        var sut = new UsersController(mockUserService.Object);
+
+        // Act
+        var result = await sut.Get();
+
+        // Assert
+        result.Should().BeOfType<NotFoundResult>();
+        var objectResult = (NotFoundResult)result;
+        objectResult.StatusCode.Should().Be(404);
+    }
+    
 }
