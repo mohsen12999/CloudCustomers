@@ -20,7 +20,8 @@ public class TestUsersServices
     {
         // Arrange
         var expectedResponse = UsersFixture.GetTestUsers();
-        var handlerMock = MockHttpMessageHandler<User>.SetupBasicGetResourceList(expectedResponse);
+        var handlerMock = MockHttpMessageHandler<User>
+            .SetupBasicGetResourceList(expectedResponse);
         var httpClient = new HttpClient(handlerMock.Object);
         var sut = new UsersService(httpClient);
         
@@ -53,5 +54,37 @@ public class TestUsersServices
 
         // Assert
         result.Should().BeOfType<List<User>>();
+    }
+    
+    [Fact]
+    public async Task GetAllUser_WhenHit404_ReturnEmptyListOfUsers()
+    {
+        // Arrange
+        var handlerMock = MockHttpMessageHandler<User>.Setup404();
+        var httpClient = new HttpClient(handlerMock.Object);
+        var sut = new UsersService(httpClient);
+        
+        // Act
+        var result = await sut.GetAllUsers();
+
+        // Assert
+        result.Count.Should().Be(0);
+    }
+    
+    [Fact]
+    public async Task GetAllUser_WhenCalled_ReturnListOfUsersOfExpectedSize()
+    {
+        // Arrange
+        var expectedResponse = UsersFixture.GetTestUsers();
+        var handlerMock = MockHttpMessageHandler<User>
+            .SetupBasicGetResourceList(expectedResponse);
+        var httpClient = new HttpClient(handlerMock.Object);
+        var sut = new UsersService(httpClient);
+        
+        // Act
+        var result = await sut.GetAllUsers();
+
+        // Assert
+        result.Count.Should().Be(expectedResponse.Count);
     }
 }
