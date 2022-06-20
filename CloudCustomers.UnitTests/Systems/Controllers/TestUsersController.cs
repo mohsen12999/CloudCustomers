@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Threading.Tasks;
 using CloudCustomers.API.Models;
+using CloudCustomers.UnitTests.Fixtures;
 using Xunit;
 
 namespace CloudCustomers.UnitTests.Systems.Controllers;
@@ -19,10 +20,7 @@ public class TestUsersController
         var mockUserService = new Mock<IUsersService>();
         mockUserService
             .Setup(service => service.GetAllUsers())
-            .ReturnsAsync(new List<User>()
-            {
-                new User(){Id = 1, Name = "Mohsen", Address = new Address() , Email = ""}
-            });
+            .ReturnsAsync(UsersFixture.GetTestUsers());
         var sut = new UsersController(mockUserService.Object);
         
         // Act
@@ -59,10 +57,7 @@ public class TestUsersController
         var mockUserService = new Mock<IUsersService>();
         mockUserService
             .Setup(service => service.GetAllUsers())
-            .ReturnsAsync(new List<User>()
-            {
-                new User(){Id = 1, Name = "Mohsen", Address = new Address() , Email = ""}
-            });
+            .ReturnsAsync(UsersFixture.GetTestUsers());
         var sut = new UsersController(mockUserService.Object);
 
         // Act
