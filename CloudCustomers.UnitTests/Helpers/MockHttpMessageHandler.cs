@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -25,6 +26,30 @@ internal static class MockHttpMessageHandler<T>
             "SendAsync",
             ItExpr.IsAny<HttpRequestMessage>(),
             ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(mockResponse);
+        return handlerMock;
+    }
+
+    internal static Mock<HttpMessageHandler> SetupBasicGetResourceList(List<T> expectedResponse, string endpoint)
+    {
+        var mockResponse = new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+        {
+            Content = new StringContent(JsonConvert.SerializeObject(expectedResponse))
+        };
+
+        mockResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+        var httpRequestMessage = new HttpRequestMessage
+        {
+            RequestUri = new Uri(endpoint),
+            Method = HttpMethod.Get
+        };
+            
+        var handlerMock = new Mock<HttpMessageHandler>();
+        handlerMock.Protected().Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                httpRequestMessage,
+                ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(mockResponse);
         return handlerMock;
     }
